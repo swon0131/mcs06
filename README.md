@@ -202,3 +202,8 @@ The toolkit is developed by:
 
 Past developpers:
 - Kingsley Stephens (Monash University)
+
+Add-on developers:
+- Wong Shao Le (Monash University)
+- Khor Jia Wynn (Monash University)
+- Bryan Thomas Yeo Ren Jia (Monash University)
