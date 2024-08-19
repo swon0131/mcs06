@@ -216,7 +216,7 @@ namespace IATK
                     mt.mainTexture = Resources.Load("circle-outline-basic") as Texture2D;
                     mt.renderQueue = 3000;
                     mt.enableInstancing = true;
-                    return builder.updateView().
+                           return builder.updateView().
                        apply(gameObject, mt);
 
                 case AbstractVisualisation.GeometryType.Lines:
