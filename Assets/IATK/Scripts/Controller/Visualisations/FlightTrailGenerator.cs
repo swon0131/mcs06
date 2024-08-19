@@ -1,39 +1,48 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro; // Include this if using TextMeshPro
 
 public class FlightTrailGenerator : MonoBehaviour
 {
-    public string filePath = "Assets/Python/2_aircraft_data_mod.csv"; // Path to the CSV file
-    public Dropdown flightDropdown; // Reference to the dropdown UI element
-    public Button viewButton; // Reference to the view button
-    public float lineWidth = 0.1f;
-    public float animationSpeed = 0.05f; // Speed of the animation
-    private List<Vector3> flightData = new List<Vector3>();
-    private LineRenderer lineRenderer;
+    public string filePath = "Assets/Python/2_aircraft_data_mod.csv";
+    public GameObject buttonPrefab;
+    public GameObject contentArea;
+
     private Dictionary<string, List<Vector3>> flightTrails = new Dictionary<string, List<Vector3>>();
 
     void Start()
     {
-        LoadFlightData();       // Load the flight data from the CSV file
-        flightDropdown = GameObject.Find("FlightDropdown").GetComponent<Dropdown>();
-        PopulateDropdown();     // Populate the dropdown with flight numbers
-        viewButton.onClick.AddListener(VisualizeSelectedFlight); // Add button click listener 
+        LoadFlightData();
+        PopulateButtons();
     }
 
     void LoadFlightData()
     {
         string[] lines = File.ReadAllLines(filePath);
 
-        for (int i = 1; i < lines.Length; i++) // Assuming the first line is a header
+        for (int i = 1; i < lines.Length; i++)
         {
             string[] values = lines[i].Split(',');
-            string flightNumber = values[2]; // Assuming flight number is in the 3rd column
-            float latitude = float.Parse(values[7]);
-            float longitude = float.Parse(values[8]);
-            float altitude = float.Parse(values[3]);
+
+            if (values.Length < 8)
+            {
+                Debug.LogWarning($"Skipping line {i + 1} because it doesn't have enough columns: {lines[i]}");
+                continue;
+            }
+
+            string flightNumber = values[2];
+            float latitude, longitude, altitude;
+
+            if (!float.TryParse(values[6], out latitude) ||
+                !float.TryParse(values[7], out longitude))
+            {
+                Debug.LogWarning($"Skipping line {i + 1} because it contains invalid float values: {lines[i]}");
+                continue;
+            }
+
+            altitude = values.Length > 3 ? float.Parse(values[3]) : 0f;
 
             Vector3 flightPoint = new Vector3(longitude, latitude, altitude);
 
@@ -46,50 +55,61 @@ public class FlightTrailGenerator : MonoBehaviour
         }
     }
 
-    void PopulateDropdown()
+    void PopulateButtons()
     {
-        flightDropdown.ClearOptions(); // Clear existing options
-        List<string> flightNumbers = new List<string>(flightTrails.Keys); // Extract flight numbers
-        flightDropdown.AddOptions(flightNumbers); // Add flight numbers to dropdown
-    }
-
-    void VisualizeSelectedFlight()
-    {
-        string selectedFlight = flightDropdown.options[flightDropdown.value].text; // Get selected flight number
-
-        if (lineRenderer != null)
+        if (buttonPrefab == null)
         {
-            Destroy(lineRenderer.gameObject); // Clear previous flight trail
+            Debug.LogError("Button prefab is not assigned!");
+            return;
         }
 
-        flightData = flightTrails[selectedFlight]; // Get data for the selected flight
-        GenerateFlightTrail(); // Generate the flight trail
-        StartCoroutine(AnimateTrail()); // Animate the flight trail
-    }
-
-    void GenerateFlightTrail()
-    {
-        if (flightData.Count == 0) return;
-
-        GameObject trailObject = new GameObject("FlightTrail");
-        lineRenderer = trailObject.AddComponent<LineRenderer>();
-
-        lineRenderer.positionCount = 0;
-        lineRenderer.startWidth = lineWidth;
-        lineRenderer.endWidth = lineWidth;
-
-        Material lineMaterial = new Material(Shader.Find("Standard"));
-        lineRenderer.material = lineMaterial;
-        lineRenderer.material.color = Color.red;
-    }
-
-    IEnumerator AnimateTrail()
-    {
-        for (int i = 0; i < flightData.Count; i++)
+        if (contentArea == null)
         {
-            lineRenderer.positionCount = i + 1;
-            lineRenderer.SetPosition(i, flightData[i]);
-            yield return new WaitForSeconds(animationSpeed);
+            Debug.LogError("Content area is not assigned!");
+            return;
         }
+
+        foreach (Transform child in contentArea.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (var flightNumber in flightTrails.Keys)
+        {
+            GameObject btn = Instantiate(buttonPrefab);
+            btn.transform.SetParent(contentArea.transform, false);
+
+            // Handle both Text and TMP_Text
+            Text btnText = btn.GetComponentInChildren<Text>();
+            TMP_Text btnTMPText = btn.GetComponentInChildren<TMP_Text>();
+
+            if (btnText != null)
+            {
+                btnText.text = flightNumber;
+            }
+            else if (btnTMPText != null)
+            {
+                btnTMPText.text = flightNumber;
+            }
+            else
+            {
+                Debug.LogError("Button prefab is missing a Text or TMP_Text component!");
+            }
+
+            Button buttonComponent = btn.GetComponent<Button>();
+            if (buttonComponent != null)
+            {
+                buttonComponent.onClick.AddListener(() => OnFlightSelected(flightNumber));
+            }
+            else
+            {
+                Debug.LogError("Button prefab is missing a Button component!");
+            }
+        }
+    }
+
+    void OnFlightSelected(string flightNumber)
+    {
+        Debug.Log($"Selected flight: {flightNumber}");
     }
 }
