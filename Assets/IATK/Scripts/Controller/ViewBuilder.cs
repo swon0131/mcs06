@@ -263,6 +263,21 @@ namespace IATK
             bigMesh = meshObject;
             view.BigMesh = bigMesh;
 
+            // Add colliders to each point
+            for (int i = 0; i < positions.Count; i++)
+            {
+                GameObject pointCollider = new GameObject("PointCollider_" + i);
+                pointCollider.transform.position = positions[i];
+                pointCollider.transform.SetParent(meshObject.transform);
+
+                SphereCollider collider = pointCollider.AddComponent<SphereCollider>();
+                collider.radius = 0.05f; // Adjust the radius as needed
+
+                pointCollider.AddComponent<PointsInteraction>();
+                pointCollider.layer = LayerMask.NameToLayer("PointLayer");
+
+            }
+
             return view;
         }
 
