@@ -13,6 +13,8 @@ namespace IATK
     public class ViewBuilder
     {
         // DATA
+        // Add this property
+        public bool CreateColliders { get; set; } = false;
 
         public enum VIEW_DIMENSION { X, Y, Z, LINKING_FIELD };      // View dimension
 
@@ -263,19 +265,20 @@ namespace IATK
             bigMesh = meshObject;
             view.BigMesh = bigMesh;
 
-            // Add colliders to each point
-            for (int i = 0; i < positions.Count; i++)
+            if (CreateColliders)
             {
-                GameObject pointCollider = new GameObject("PointCollider_" + i);
-                pointCollider.transform.position = positions[i];
-                pointCollider.transform.SetParent(meshObject.transform);
+                for (int i = 0; i < positions.Count; i++)
+                {
+                    GameObject pointCollider = new GameObject("PointCollider_" + i);
+                    pointCollider.transform.position = positions[i];
+                    pointCollider.transform.SetParent(meshObject.transform);
 
-                SphereCollider collider = pointCollider.AddComponent<SphereCollider>();
-                collider.radius = 0.05f; // Adjust the radius as needed
+                    SphereCollider collider = pointCollider.AddComponent<SphereCollider>();
+                    collider.radius = 0.05f; // Adjust the radius as needed
 
-                pointCollider.AddComponent<PointsInteraction>();
-                pointCollider.layer = LayerMask.NameToLayer("PointLayer");
-
+                    pointCollider.AddComponent<PointsInteraction>();
+                    pointCollider.layer = LayerMask.NameToLayer("PointLayer");
+                }
             }
 
             return view;

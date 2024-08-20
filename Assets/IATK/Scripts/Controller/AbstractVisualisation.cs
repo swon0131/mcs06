@@ -212,6 +212,7 @@ namespace IATK
 
                 case AbstractVisualisation.GeometryType.Points:
                     builder.createIndicesPointTopology();
+                    builder.CreateColliders = true;
                     mt = new Material(Shader.Find("IATK/OutlineDots"));
                     mt.mainTexture = Resources.Load("circle-outline-basic") as Texture2D;
                     mt.renderQueue = 3000;
