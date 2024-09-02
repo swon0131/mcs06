@@ -3,7 +3,9 @@ guid: 3981a1690c1f93943b854484eb699ffb
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - rightTriggerPressAction: {fileID: -9125730733183272473, guid: 4ad928a61d9612a4685b1d2ab5c52c85,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

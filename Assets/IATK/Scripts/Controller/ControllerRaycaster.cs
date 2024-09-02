@@ -8,18 +8,35 @@ public class ControllerRaycaster : MonoBehaviour
     public LayerMask pointLayerMask; // Assign a specific layer for the point colliders
 
     private Camera mainCamera;
+    private bool isTriggerHeld = false;
 
     void Start()
     {
         mainCamera = Camera.main;
 
         // Subscribe to the right trigger action
-        rightTriggerAction.action.performed += OnRightTriggerPressed;
+        rightTriggerAction.action.started += OnRightTriggerStarted;
+        rightTriggerAction.action.canceled += OnRightTriggerReleased;
     }
 
     void Update()
     {
-        RaycastFromController();
+        if (isTriggerHeld)
+        {
+            RaycastFromController();
+        }
+    }
+
+    private void OnRightTriggerStarted(InputAction.CallbackContext context)
+    {
+        // The trigger has been pressed, now consider it being held
+        isTriggerHeld = true;
+    }
+
+    private void OnRightTriggerReleased(InputAction.CallbackContext context)
+    {
+        // The trigger has been released
+        isTriggerHeld = false;
     }
 
     private void RaycastFromController()
@@ -35,29 +52,14 @@ public class ControllerRaycaster : MonoBehaviour
             if (pointHandler != null)
             {
                 Debug.Log("Pointing at: " + hit.collider.gameObject.name);
-                // You can add more logic here, such as highlighting the point, etc.
-            }
-        }
-    }
-
-    private void OnRightTriggerPressed(InputAction.CallbackContext context)
-    {
-        // Perform a raycast to check if the right trigger press is pointing at a point
-        Ray ray = new Ray(transform.position, transform.forward);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, raycastDistance, pointLayerMask))
-        {
-            PointsInteraction pointHandler = hit.collider.GetComponent<PointsInteraction>();
-            if (pointHandler != null)
-            {
-                pointHandler.OnTriggerPressed(context);
+                // Trigger the interaction logic here
             }
         }
     }
 
     void OnDestroy()
     {
-        rightTriggerAction.action.performed -= OnRightTriggerPressed;
+        rightTriggerAction.action.started -= OnRightTriggerStarted;
+        rightTriggerAction.action.canceled -= OnRightTriggerReleased;
     }
 }
