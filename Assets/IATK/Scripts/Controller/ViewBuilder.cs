@@ -64,7 +64,6 @@ namespace IATK
 
         private BigMesh bigMesh;                                    // the big mesh
 
-
         // PUBLIC
 
         /// <summary>
@@ -274,10 +273,16 @@ namespace IATK
                     pointCollider.transform.SetParent(meshObject.transform);
 
                     SphereCollider collider = pointCollider.AddComponent<SphereCollider>();
-                    collider.radius = 0.05f; // Adjust the radius as needed
+                    collider.radius = 0.01f; // Adjust the radius as needed
 
                     pointCollider.AddComponent<PointsInteraction>();
+
+                    // Add the extended PointInformation component and populate its fields
+                    PointInformation pointInformation = pointCollider.AddComponent<PointInformation>();
+
+                    // Populate the PointInformation with data?
                     pointCollider.layer = LayerMask.NameToLayer("PointLayer");
+
                 }
             }
 

@@ -1,14 +1,25 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class ControllerRaycaster : MonoBehaviour
 {
     public InputActionProperty rightTriggerAction; // Assign this in the Inspector
     public float raycastDistance = 10f;
     public LayerMask pointLayerMask; // Assign a specific layer for the point colliders
+    public TMP_Text FlightInformationText;
 
     private Camera mainCamera;
     private bool isTriggerHeld = false;
+
+    // Example property to hold information about the point
+    public string pointInformation;
+
+    // Optionally, you could also have a method to get more complex information
+    public string GetPointInformation()
+    {
+        return pointInformation;
+    }
 
     void Start()
     {
@@ -53,6 +64,10 @@ public class ControllerRaycaster : MonoBehaviour
             {
                 Debug.Log("Pointing at: " + hit.collider.gameObject.name);
                 // Trigger the interaction logic here
+
+                // We have to output the information into the FlightInformation TextMeshPro
+
+
             }
         }
     }

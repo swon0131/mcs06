@@ -5,6 +5,8 @@ public class PointsInteraction : MonoBehaviour
 {
     private InputAction inputAction;
 
+
+
     // Assign the input action dynamically
     public void AssignInputAction(InputActionReference actionReference)
     {
@@ -19,7 +21,6 @@ public class PointsInteraction : MonoBehaviour
     {
         // Handle the trigger press event
         Debug.Log("Trigger Pressed on " + gameObject.name);
-        // Add your collision logic here
     }
 
     private void OnDestroy()
