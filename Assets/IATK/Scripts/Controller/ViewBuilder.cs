@@ -277,10 +277,6 @@ namespace IATK
 
                     pointCollider.AddComponent<PointsInteraction>();
 
-                    // Add the extended PointInformation component and populate its fields
-                    PointInformation pointInformation = pointCollider.AddComponent<PointInformation>();
-
-                    // Populate the PointInformation with data?
                     pointCollider.layer = LayerMask.NameToLayer("PointLayer");
 
                 }
