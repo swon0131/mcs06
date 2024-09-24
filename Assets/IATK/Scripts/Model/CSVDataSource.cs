@@ -14,7 +14,7 @@ namespace IATK
     public class CSVDataSource : DataSource
     {
         // DATA
-
+        public List<PointInformation> pointsInfoList = new List<PointInformation>();
         [Tooltip("Text asset containing the data")]
         public TextAsset data;
 
@@ -304,6 +304,17 @@ namespace IATK
                     for (int i = 1; i < lines.Length; i++)
                     {
                         string[] values = lines[i].Split(split);
+
+                        long timestamp = long.Parse(values[0]);
+                        string utc = values[1];
+                        string callsign = values[2];
+                        int altitude = int.Parse(values[3]);
+                        int speed = int.Parse(values[4]);
+                        int direction = int.Parse(values[5]);
+                        float latitude = float.Parse(values[6]);
+                        float longitude = float.Parse(values[7]);
+                        PointInformation pointInfo = new PointInformation(speed, timestamp, utc, callsign, altitude, direction, latitude, longitude);
+                        pointsInfoList.Add(pointInfo);
 
                         //dimension reading
                         for (int k = 0; k < values.Count(); k++)
