@@ -1,11 +1,16 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using IATK;
 public class PointsInteraction : MonoBehaviour
 {
     private InputAction inputAction;
 
+    public CSVDataSource csvDataSource;
 
+    public void Start()
+    {
+        csvDataSource = FindObjectOfType<CSVDataSource>();        
+    }
 
     // Assign the input action dynamically
     public void AssignInputAction(InputActionReference actionReference)
