@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 
-public class PointInformation : MonoBehaviour
+public class PointInformation
 {
     // Public fields or properties to hold additional information
     public int pointId;
