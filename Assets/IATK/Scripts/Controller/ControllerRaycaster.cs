@@ -14,14 +14,8 @@ public class ControllerRaycaster : MonoBehaviour
     private Camera mainCamera;
     private bool isTriggerHeld = false;
 
-    // Example property to hold information about the point
-    public string pointInformation;
-
-    // Optionally, you could also have a method to get more complex information
-    public string GetPointInformation()
-    {
-        return pointInformation;
-    }
+    // The latest point interacted with
+    private string pointName;
 
     void Start()
     {
@@ -55,6 +49,7 @@ public class ControllerRaycaster : MonoBehaviour
         }
 
         // TESTING PURPOSES
+        /*
         int index = 10;
         string callsign = csvDataSource.pointsInfoList[index].pointCallsign;
         float longitude = csvDataSource.pointsInfoList[index].pointLongitude;
@@ -72,6 +67,7 @@ public class ControllerRaycaster : MonoBehaviour
                                  $"Timestamp: {timestamp}\n" +
                                  $"Speed: {speed}\n" +
                                  $"Direction: {direction}";
+        */
 
     }
 
@@ -93,6 +89,8 @@ public class ControllerRaycaster : MonoBehaviour
     {
         // The trigger has been released
         isTriggerHeld = false;
+        // update flight details if a point was interacted with
+        if (pointName != "") { UpdateFlightDetails(pointName); }
     }
 
     private void RaycastFromController()
@@ -108,47 +106,38 @@ public class ControllerRaycaster : MonoBehaviour
             if (pointHandler != null)
             {
                 Debug.Log("Pointing at: " + hit.collider.gameObject.name);
-                string objectName = hit.collider.gameObject.name;
-
-                // Find the position of the last underscore in the string
-                int underscoreIndex = objectName.LastIndexOf('_');
-                int index;
-                if (underscoreIndex != -1 && underscoreIndex < objectName.Length - 1)
-                {
-                    // Extract the substring starting from the character after the underscore to the end of the string
-
-
-                    index = int.Parse(objectName.Substring(underscoreIndex + 1));
-                    string callsign = csvDataSource.pointsInfoList[index].pointCallsign;
-                    float longitude = csvDataSource.pointsInfoList[index].pointLongitude;
-                    float latitude = csvDataSource.pointsInfoList[index].pointLatitude;
-                    int altitude = csvDataSource.pointsInfoList[index].pointAltitude;
-                    long timestamp = csvDataSource.pointsInfoList[index].timeStamp;
-                    int speed = csvDataSource.pointsInfoList[index].speed;
-                    int direction = csvDataSource.pointsInfoList[index].pointDirection;
-
-                    // Trigger the interaction logic here
-                    flightDetailsText.text = $"Callsign: {callsign}\n" +
-                                             $"Longitude: {longitude}\n" +
-                                             $"Latitude: {latitude}\n" +
-                                             $"Altitude: {altitude}\n" +
-                                             $"Timestamp: {timestamp}\n" +
-                                             $"Speed: {speed}\n" +
-                                             $"Direction: {direction}";
-                    // Log the extracted index
-                    Debug.Log("Extracted index: " + index);
-                }
-                else
-                {
-                    Debug.LogWarning("No underscore found or nothing after the underscore in the object name.");
-                }
-
-
-                // We have to output the information into the FlightInformation TextMeshPro
-
-
+                pointName = hit.collider.gameObject.name;  
             }
         }
+    }
+
+    private void UpdateFlightDetails(string objectName)
+    {
+
+        // Find the position of the last underscore in the string
+        int underscoreIndex = objectName.LastIndexOf('_');
+        int index;
+
+        // Extract the substring starting from the character after the underscore to the end of the string
+
+
+        index = int.Parse(objectName.Substring(underscoreIndex + 1));
+        string callsign = csvDataSource.pointsInfoList[index].pointCallsign;
+        float longitude = csvDataSource.pointsInfoList[index].pointLongitude;
+        float latitude = csvDataSource.pointsInfoList[index].pointLatitude;
+        int altitude = csvDataSource.pointsInfoList[index].pointAltitude;
+        long timestamp = csvDataSource.pointsInfoList[index].timeStamp;
+        int speed = csvDataSource.pointsInfoList[index].speed;
+        int direction = csvDataSource.pointsInfoList[index].pointDirection;
+
+        // Trigger the interaction logic here
+        flightDetailsText.text = $"Callsign: {callsign}\n" +
+                                    $"Longitude: {longitude}\n" +
+                                    $"Latitude: {latitude}\n" +
+                                    $"Altitude: {altitude}\n" +
+                                    $"Timestamp: {timestamp}\n" +
+                                    $"Speed: {speed}\n" +
+                                    $"Direction: {direction}";
     }
 
     void OnDestroy()
