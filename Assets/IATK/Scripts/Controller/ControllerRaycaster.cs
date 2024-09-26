@@ -45,28 +45,6 @@ public class ControllerRaycaster : MonoBehaviour
         {
             Debug.LogWarning("Target GameObject is not assigned.");
         }
-
-        // TESTING PURPOSES
-        /*
-        int index = 10;
-        string callsign = csvDataSource.pointsInfoList[index].pointCallsign;
-        float longitude = csvDataSource.pointsInfoList[index].pointLongitude;
-        float latitude = csvDataSource.pointsInfoList[index].pointLatitude;
-        int altitude = csvDataSource.pointsInfoList[index].pointAltitude;
-        long timestamp = csvDataSource.pointsInfoList[index].timeStamp;
-        int speed = csvDataSource.pointsInfoList[index].speed;
-        int direction = csvDataSource.pointsInfoList[index].pointDirection;
-
-        // Trigger the interaction logic here
-        flightDetailsText.text = $"Callsign: {callsign}\n" +
-                                 $"Longitude: {longitude}\n" +
-                                 $"Latitude: {latitude}\n" +
-                                 $"Altitude: {altitude}\n" +
-                                 $"Timestamp: {timestamp}\n" +
-                                 $"Speed: {speed}\n" +
-                                 $"Direction: {direction}";
-        */
-
     }
 
     void Update()
@@ -123,18 +101,22 @@ public class ControllerRaycaster : MonoBehaviour
         float longitude = csvDataSource.pointsInfoList[index].pointLongitude;
         float latitude = csvDataSource.pointsInfoList[index].pointLatitude;
         int altitude = csvDataSource.pointsInfoList[index].pointAltitude;
-        long timestamp = csvDataSource.pointsInfoList[index].timeStamp;
+        string utc = csvDataSource.pointsInfoList[index].utc;
         int speed = csvDataSource.pointsInfoList[index].speed;
         int direction = csvDataSource.pointsInfoList[index].pointDirection;
 
         // Trigger the interaction logic here
-        flightDetailsText.text = $"Callsign: {callsign}\n" +
-                                    $"Longitude: {longitude}\n" +
-                                    $"Latitude: {latitude}\n" +
-                                    $"Altitude: {altitude}\n" +
-                                    $"Timestamp: {timestamp}\n" +
-                                    $"Speed: {speed}\n" +
-                                    $"Direction: {direction}";
+        flightDetailsText.text = string.Format(
+            "Callsign   : {0,-10}\n" +
+            "Longitude  : {1, -10}\n" +
+            "Latitude   : {2, -10}\n" +
+            "Altitude   : {3, -10}\n" +
+            "Timestamp  : {4, -10}\n" +
+            "Speed      : {5, -10}\n" +
+            "Direction  : {6, -10}",
+            callsign, longitude, latitude, altitude, utc, speed, direction
+        );
+
     }
 
     void OnDestroy()
