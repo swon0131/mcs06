@@ -9,6 +9,7 @@ namespace IATK
     public class ScatterplotVisualisation : AbstractVisualisation 
     {
 
+
         public override void CreateVisualisation()
         {
             string savedName = name;
@@ -534,7 +535,7 @@ namespace IATK
                 if (!visualisationReference.dataSource.IsLoaded) visualisationReference.dataSource.load();
 
                 ViewBuilder builder = new ViewBuilder(geometryToMeshTopology(configuration.Geometry), "Simple Visualisation");
-
+                
                 if ((visualisationReference.dataSource[getAxis(configuration.Axies, CreationConfiguration.Axis.X)] != null) ||
                     (visualisationReference.dataSource[getAxis(configuration.Axies, CreationConfiguration.Axis.Y)] != null) ||
                     (visualisationReference.dataSource[getAxis(configuration.Axies, CreationConfiguration.Axis.Z)] != null))
@@ -552,7 +553,9 @@ namespace IATK
                     destroyView();
 
                     //return the appropriate geometry view
-                    return ApplyGeometryAndRendering(creationConfiguration, ref builder);
+                    View view = ApplyGeometryAndRendering(creationConfiguration, ref builder);
+                    buttonHandler.SetViewBuilder(builder);
+                    return view;
                 }
 
             }

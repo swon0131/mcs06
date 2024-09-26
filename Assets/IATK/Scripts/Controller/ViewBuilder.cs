@@ -15,6 +15,8 @@ namespace IATK
         // DATA
         // Add this property
         public bool CreateColliders { get; set; } = false;
+        
+        public List<SphereCollider> pointColliderList = new List<SphereCollider>();
 
         public enum VIEW_DIMENSION { X, Y, Z, LINKING_FIELD };      // View dimension
 
@@ -278,6 +280,7 @@ namespace IATK
                     pointCollider.AddComponent<PointsInteraction>();
 
                     pointCollider.layer = LayerMask.NameToLayer("PointLayer");
+                    pointColliderList.Add(collider);
 
                 }
             }

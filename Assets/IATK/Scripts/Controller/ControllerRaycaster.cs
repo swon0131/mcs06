@@ -37,9 +37,7 @@ public class ControllerRaycaster : MonoBehaviour
             {
                 if (component is TextMeshProUGUI tmpComponent)
                 {
-                    Debug.Log(tmpComponent.GetType().Name); // Log the type of each component
                     flightDetailsText = tmpComponent; // Now it's a TextMeshProUGUI component
-                    Debug.Log(flightDetailsText.text); // Log the current text
                 }
             }
         }
@@ -119,9 +117,8 @@ public class ControllerRaycaster : MonoBehaviour
         int index;
 
         // Extract the substring starting from the character after the underscore to the end of the string
-
-
         index = int.Parse(objectName.Substring(underscoreIndex + 1));
+
         string callsign = csvDataSource.pointsInfoList[index].pointCallsign;
         float longitude = csvDataSource.pointsInfoList[index].pointLongitude;
         float latitude = csvDataSource.pointsInfoList[index].pointLatitude;

@@ -10,7 +10,12 @@ namespace IATK
     public abstract class AbstractVisualisation : MonoBehaviour
     {
         // ENUMS
+        public ButtonHandler buttonHandler;
+        public void Start()
+        {
 
+            buttonHandler = FindObjectOfType<ButtonHandler>();
+        }
         public enum GeometryType
         {
             Undefined,
