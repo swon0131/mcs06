@@ -29,7 +29,31 @@ public class ButtonHandler : MonoBehaviour
         if (dropdownHandler != null)
         {
             string value = dropdownHandler.GetDropdownValue();
+
+            // Line Visualisation filter of 3D model
             foreach (View view in scatterplotLineVisualisation.viewList)
+            {
+                Color[] colors = view.GetColors();
+
+                for (int i = 0; i < colors.Length; i++)
+                {
+                    string callsign = csvDataSource.pointsInfoList[i].pointCallsign;
+                    if (callsign != value)
+                    {
+                        colors[i].a = 0f;  // Set alpha to 0 for transparency
+                        viewBuilder.pointColliderList[i].enabled = false; // disable the collider
+                    }
+                    else
+                    {
+                        colors[i].a = 1f; // make it opaque
+                        viewBuilder.pointColliderList[i].enabled = true; // enable the collider
+                    }
+                }
+                view.SetColors(colors);  // Apply the new transparent colors
+            }
+
+            // Point Visualisation filter of 3D model
+            foreach (View view in scatterplotPointVisualisation.viewList)
             {
                 Color[] colors = view.GetColors();
 
