@@ -1,21 +1,38 @@
 import pandas as pd
+import os
 
-# Load the CSV file
-file_path = 'AK6128_3618eb66.csv'
-data = pd.read_csv(file_path)
+# Folder containing your CSV files
+folder_path = r'C:\Users\bryan\OneDrive\Documents\GitHub\mcs06\Assets\FlightCSVData'
 
-# Split the 'Position' column into 'Latitude' and 'Longitude'
-data[['Latitude', 'Longitude']] = data['Position'].str.split(',', expand=True)
+# List to hold DataFrames from each modified CSV file
+dataframes = []
 
-# Convert the new columns to numeric types
-data['Latitude'] = pd.to_numeric(data['Latitude'])
-data['Longitude'] = pd.to_numeric(data['Longitude'])
+# Loop through each file in the folder
+for file_name in os.listdir(folder_path):
+    if file_name.endswith('.csv'):  # Process only CSV files
+        file_path = os.path.join(folder_path, file_name)
+        
+        # Load the CSV file
+        data = pd.read_csv(file_path)
 
-# Drop the original 'Position' column
-data = data.drop(columns=['Position'])
+        # Split the 'Position' column into 'Latitude' and 'Longitude'
+        data[['Latitude', 'Longitude']] = data['Position'].str.split(',', expand=True)
 
-# Save the modified data to a new CSV file
-output_file_path = file_path[:len(file_path)-4-1] + "_modified.csv"
-data.to_csv(output_file_path, index=False)
+        # Convert the new columns to numeric types
+        data['Latitude'] = pd.to_numeric(data['Latitude'])
+        data['Longitude'] = pd.to_numeric(data['Longitude'])
 
-print(f"Data has been saved to {output_file_path}")
+        # Drop the original 'Position' column
+        data = data.drop(columns=['Position'])
+
+        # Add the modified DataFrame to the list
+        dataframes.append(data)
+
+# Concatenate all the DataFrames into one
+combined_data = pd.concat(dataframes, ignore_index=True)
+
+# Save the concatenated DataFrame to a new CSV file
+combined_output_path = os.path.join(folder_path, 'combined_modified.csv')
+combined_data.to_csv(combined_output_path, index=False)
+
+print(f"All modified CSV files have been concatenated and saved to {combined_output_path}")
