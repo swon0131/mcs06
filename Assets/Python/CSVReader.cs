@@ -1,20 +1,17 @@
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 public class CSVReader : MonoBehaviour
 {
-    public string filePath; // The relative path to the CSV file within the Assets folder
+    public TextAsset data; // Drag and drop your CSV file here in the Unity Inspector
 
     public HashSet<string> ReadUniqueCallsigns()
     {
         HashSet<string> uniqueCallsigns = new HashSet<string>();
 
-        // Ensure the file path is correct; adjust if necessary
-        string path = Path.Combine(Application.dataPath, filePath);
-        if (File.Exists(path))
+        if (data != null)
         {
-            string[] lines = File.ReadAllLines(path);
+            string[] lines = data.text.Split(new char[] { '\n', '\r' }, System.StringSplitOptions.RemoveEmptyEntries);
             for (int i = 1; i < lines.Length; i++) // Skip the header line
             {
                 string[] columns = lines[i].Split(',');
@@ -27,7 +24,7 @@ public class CSVReader : MonoBehaviour
         }
         else
         {
-            Debug.LogError("CSV file not found at: " + path);
+            Debug.LogError("CSV data asset is not assigned.");
         }
 
         return uniqueCallsigns;
