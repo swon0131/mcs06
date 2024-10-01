@@ -2,7 +2,7 @@ import pandas as pd
 import os
 
 # Folder containing your CSV files
-folder_path = r'C:\Users\bryan\OneDrive\Documents\GitHub\mcs06\Assets\FlightCSVData'
+folder_path = r'C:\Users\bryan\OneDrive\Documents\GitHub\mcs06\Assets\FlightCSVData\20 Flights'
 
 # List to hold DataFrames from each modified CSV file
 dataframes = []
