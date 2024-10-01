@@ -226,6 +226,7 @@ namespace IATK
                        apply(gameObject, mt);
 
                 case AbstractVisualisation.GeometryType.Lines:
+                    builder.CreateColliders = false;
                     if (visualisationReference.graphDimension != "Undefined")
                     {
                         CSVDataSource csvds = (CSVDataSource)(visualisationReference.dataSource);
