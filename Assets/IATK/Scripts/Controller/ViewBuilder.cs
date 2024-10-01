@@ -14,7 +14,7 @@ namespace IATK
     {
         // DATA
         // Add this property
-        public bool CreateColliders { get; set; } = false;
+        public bool CreateColliders { get; set; } = true;
         
         public List<SphereCollider> pointColliderList = new List<SphereCollider>();
 
