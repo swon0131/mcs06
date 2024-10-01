@@ -263,6 +263,7 @@ namespace IATK
                 case AbstractVisualisation.GeometryType.LinesAndDots:
                     if (visualisationReference.graphDimension != "Undefined")
                     {
+                        builder.CreateColliders = true;
                         CSVDataSource csvds = (CSVDataSource)(visualisationReference.dataSource);
                         builder.createIndicesGraphTopology(csvds.GraphEdges);
                         mt = new Material(Shader.Find("IATK/LineAndDotsShader"));
