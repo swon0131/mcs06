@@ -79,7 +79,7 @@ public class ButtonHandler : MonoBehaviour
             foreach (View view in scatterplotPointVisualisation.viewList)
             {
                 Color[] colors = view.GetColors();
-
+                HashSet<string> filteredCallsigns = new HashSet<string>();
                 for (int i = 0; i < colors.Length; i++)
                 {
                     string callsign = csvDataSource.pointsInfoList[i].pointCallsign;
@@ -90,9 +90,15 @@ public class ButtonHandler : MonoBehaviour
                     }
                     else
                     {
+                        filteredCallsigns.Add(callsign);
                         colors[i].a = 0f; // make it transparent
                         viewBuilder.pointColliderList[i].enabled = false; // disable the collider
+
                     }
+                }
+                foreach (string filteredCallsign in filteredCallsigns)
+                {
+                    Debug.Log("Callsign: " + filteredCallsign + " 's points have been hidden and their colliders disabled");
                 }
                 view.SetColors(colors);  // Apply the new transparent colors
             }

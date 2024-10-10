@@ -16,17 +16,24 @@ public class DropdownPopulator : MonoBehaviour
     {
         HashSet<string> uniqueCallsigns = csvReader.ReadUniqueCallsigns();
         dropdown.ClearOptions();
-        
+
         // Create a list to hold the options
         List<string> options = new List<string>();
-        
+
         // Add the "Default" option
         options.Add("Default");
-        
+
         // Add unique callsigns to the list
         options.AddRange(uniqueCallsigns); // Convert HashSet to List for TMP_Dropdown
-        
+
+        // Log each option to the console
+        foreach (string option in options)
+        {
+            Debug.Log("Dropdown option: " + option);
+        }
+
         // Add all options to the dropdown
         dropdown.AddOptions(options);
     }
+
 }
