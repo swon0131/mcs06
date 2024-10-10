@@ -21,6 +21,27 @@ public class ControllerRaycaster : MonoBehaviour
     {
         mainCamera = Camera.main;
         csvDataSource = FindObjectOfType<CSVDataSource>();
+
+        // Debug check for rightTriggerAction
+        if ( rightTriggerAction.action !=null)
+        {
+            Debug.Log("ControllerRaycaster.cs: RightTriggerAction bound to script successfully.");
+        }
+        else
+        {
+            Debug.LogError("ControllerRaycaster.cs: Right trigger action not bound to script. Select the 'GenericXR/Right Trigger Pressed' reference in the inspector");
+        }
+
+        // Debug check for ScatterplotVisualisation
+        if (pointLayerMask != 0)
+        {
+            Debug.Log("ButtonHandler.cs: Collision filter initialized as 'PointLayer'.");
+
+        }
+        else
+        {
+            Debug.LogError("ButtonHandler.cs: Collision filter uninitialized. Select the 'PointLayer' filter in the inspector");
+        }
         // Subscribe to the right trigger action
         rightTriggerAction.action.started += OnRightTriggerStarted;
         rightTriggerAction.action.canceled += OnRightTriggerReleased;
