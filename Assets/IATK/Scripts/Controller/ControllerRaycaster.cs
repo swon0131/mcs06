@@ -87,7 +87,10 @@ public class ControllerRaycaster : MonoBehaviour
         // The trigger has been released
         isTriggerHeld = false;
         // update flight details if a point was interacted with
-        if (pointName != "") { UpdateFlightDetails(pointName); }
+        if (pointName != "") {
+            Debug.Log("Last tracked point is " + pointName + ". Displaying flight details for it.");
+            UpdateFlightDetails(pointName); 
+        }
     }
 
     private void RaycastFromController()
